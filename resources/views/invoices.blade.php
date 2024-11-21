@@ -31,11 +31,17 @@
                     <div class="col-lg-5">
                         <form action="" id="formConsulta">
                             <div class="form-group row mb-3">
-                                <label class="col-sm-3 col-form-label" for="fecha">Fecha de Procesamiento:</label>
-                                <div class="col-sm-6">
-                                    <input type="date" class="form-control" id="fecha" name="fecha" value="{{ $fecha }}" required>
+                                <label class="col-sm-1 col-form-label" for="fecha">Desde:</label>
+                                <div class="col-sm-4">
+                                    <input type="date" class="form-control" id="fecha" name="fecha"
+                                        value="{{ $fecha }}" required>
                                 </div>
-                                <div class="col-sm-3">
+                                <label class="col-sm-1 col-form-label" for="fecha">Hasta:</label>
+                                <div class="col-sm-4">
+                                    <input type="date" class="form-control" id="hasta" name="hasta"
+                                        value="{{ $hasta }}" required>
+                                </div>
+                                <div class="col-sm-2">
                                     <input type="submit" value="Consultar DTEs" class="btn btn-primary">
                                 </div>
                             </div>
@@ -50,8 +56,11 @@
                                 <div class="col-lg-4">
                                     <h1 class="header-title text-center">
                                         Documentos Emitidos
-                                        @if($fecha)
+                                        @if ($fecha)
                                             : {{ \Carbon\Carbon::parse($fecha)->format('d/m/Y') }}
+                                        @endif
+                                        @if ($hasta)
+                                            - {{ \Carbon\Carbon::parse($hasta)->format('d/m/Y') }}
                                         @endif
                                     </h1>
                                 </div>
@@ -66,27 +75,28 @@
                                 <th style="width: 5%;">Transacción</th>
                                 <th style="width: 10%;">Tipo de Documento</th>
                                 <th style="width: 15%;">Información Hacienda</th>
-                                <th style="width: 15%;">Información Receptor</th>
+                                <th style="width: 15%;">Receptor</th>
                                 <th style="width: 10%;">Fecha Procesamiento</th>
+                                <th style="width: 5%">Totales</th>
                                 <th style="width: 10%;">Estado</th>
                                 <th style="width: 15%;">Observaciones</th>
-                                <th style="width: 20%;">Acciones</th>
+                                <th style="width: 15%;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($invoices as $invoice)
                                 @if ($invoice['estado'] == 'RECHAZADO')
-                                    <tr class="table-danger">
+                                    <tr class="table-danger small">
                                     @elseif ($invoice['estado'] == 'CONTINGENCIA')
-                                    <tr class="table-warning">
+                                    <tr class="table-warning small">
                                     @else
-                                    <tr>
+                                    <tr class="small">
                                 @endif
                                 <td>
-                                    @if(property_exists($invoice["documento"], 'apendice'))
-                                        @if($invoice["documento"]->apendice)
-                                            @foreach($invoice["documento"]->apendice as $apendice)
-                                                @if($apendice->etiqueta == "Transaccion")
+                                    @if (property_exists($invoice['documento'], 'apendice'))
+                                        @if ($invoice['documento']->apendice)
+                                            @foreach ($invoice['documento']->apendice as $apendice)
+                                                @if ($apendice->etiqueta == 'Transaccion')
                                                     {{ $apendice->valor }}
                                                 @endif
                                             @endforeach
@@ -112,19 +122,19 @@
                                         if ($invoice['tipo_dte'] == '14') {
                                             $receptor = $invoice['documento']->sujetoExcluido;
                                         } else {
-                                            if(property_exists($invoice['documento'], 'receptor')) {
+                                            if (property_exists($invoice['documento'], 'receptor')) {
                                                 $receptor = $invoice['documento']->receptor;
                                             } else {
                                                 $receptor = null;
                                             }
                                         }
 
-                                        if($receptor) {
+                                        if ($receptor) {
                                             if (property_exists($receptor, 'nombre')) {
                                                 $nombre = $receptor->nombre;
                                             }
                                             if (in_array($invoice['tipo_dte'], $receptores_nit)) {
-                                                if(property_exists($receptor, 'nit')) {
+                                                if (property_exists($receptor, 'nit')) {
                                                     $documento = $receptor->nit;
                                                 }
                                             } else {
@@ -141,7 +151,53 @@
                                         @endif
                                     </p>
                                 </td>
-                                <td>{{ \Carbon\Carbon::parse($invoice['fh_procesamiento'])->subHours(6)->format('d/m/Y H:i:s') }}
+                                <td>
+                                    {{ \Carbon\Carbon::parse($invoice['fh_procesamiento'])->subHours(6)->format('d/m/Y H:i:s') }}
+                                </td>
+                                <td>
+                                    @switch($invoice['tipo_dte'])
+                                        @case('01')
+                                            <strong>Total:
+                                            </strong>${{ number_format($invoice['documento']->resumen->totalPagar, 2, '.', ',') }}
+                                        @break
+
+                                        @case('03')
+                                            <strong>Neto:
+                                            </strong>${{ number_format($invoice['documento']->resumen->subTotalVentas, 2, '.', ',') }}<br>
+                                            <strong>IVA:
+                                            </strong>${{ number_format($invoice['documento']->resumen->totalPagar - $invoice['documento']->resumen->subTotalVentas, 2, '.', ',') }}<br>
+                                            <strong>Total:
+                                            </strong>${{ number_format($invoice['documento']->resumen->totalPagar, 2, '.', ',') }}
+                                        @break
+
+                                        @case('05')
+                                            <strong>Neto:
+                                            </strong>${{ number_format($invoice['documento']->resumen->subTotalVentas, 2, '.', ',') }}<br>
+                                            <strong>IVA:
+                                            </strong>${{ number_format($invoice['documento']->resumen->montoTotalOperacion - $invoice['documento']->resumen->subTotalVentas, 2, '.', ',') }}<br>
+                                            <strong>Total:
+                                            </strong>${{ number_format($invoice['documento']->resumen->montoTotalOperacion, 2, '.', ',') }}
+                                        @break
+
+                                        @case('07')
+                                            <strong>Sujeto a Retención:
+                                            </strong>${{ number_format($invoice['documento']->resumen->totalSujetoRetencion, 2, '.', ',') }}<br>
+                                            <strong>IVA Retenido:
+                                            </strong>${{ number_format($invoice['documento']->resumen->totalIVAretenido, 2, '.', ',') }}
+                                        @break
+
+                                        @case('11')
+                                            <strong>Total:
+                                            </strong>${{ number_format($invoice['documento']->resumen->totalPagar, 2, '.', ',') }}
+                                        @break
+
+                                        @case('14')
+                                            <strong>Total:
+                                            </strong>${{ number_format($invoice['documento']->resumen->totalCompra, 2, '.', ',') }}
+                                        @break
+
+                                        @default
+                                    @endswitch
                                 </td>
                                 <td>{{ $invoice['estado'] }}</td>
                                 <td class="small">
@@ -180,7 +236,7 @@
                                     @if ($invoice['estado'] === 'CONTINGENCIA' || $invoice['estado'] === 'RECHAZADO')
                                     @else
                                         <div class="d-inline-flex">
-                                            <a href="{{$invoice["enlace_pdf"]}}"
+                                            <a href="{{ $invoice['enlace_pdf'] }}"
                                                 class="btn btn-sm btn-danger ms-1 d-flex align-items-center"
                                                 target="_blank">PDF</a>
                                             <a href="{{ $invoice['enlace_json'] }}"
@@ -203,14 +259,15 @@
                         </tbody>
                         <tfoot>
                             <tr class="align-middle text-center">
-                                <th>Transacción</th>
-                                <th>Tipo de Documento</th>
-                                <th>Información Hacienda</th>
-                                <th>Información Receptor</th>
-                                <th>Fecha Procesamiento</th>
-                                <th>Estado</th>
-                                <th>Observaciones</th>
-                                <th>Acciones</th>
+                                <th style="width: 5%;">Transacción</th>
+                                <th style="width: 10%;">Tipo de Documento</th>
+                                <th style="width: 15%;">Información Hacienda</th>
+                                <th style="width: 15%;">Receptor</th>
+                                <th style="width: 10%;">Fecha Procesamiento</th>
+                                <th style="width: 5%">Totales</th>
+                                <th style="width: 10%;">Estado</th>
+                                <th style="width: 15%;">Observaciones</th>
+                                <th style="width: 15%;">Acciones</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -222,8 +279,7 @@
                                 <h2>Estadísticas</h2>
                             </div>
                             <div class="col-md-2 text-center">
-                                <a href="/invoices?fecha={{ date('Y-m-d') }}"
-                                    class="card mb-2 text-decoration-none">
+                                <a href="/invoices?fecha={{ date('Y-m-d') }}" class="card mb-2 text-decoration-none">
                                     <div class="card-body bg-light btn shadow">
                                         <div class="row py-2 justify-content-center">
                                             <div class="col-3">
@@ -296,8 +352,7 @@
                                         <div class="row py-2 justify-content-center">
                                             <div class="col-3">
                                                 <br>
-                                                <i
-                                                    class="fas fa-file-circle-exclamation text-warning fa-4x fa-4x"></i>
+                                                <i class="fas fa-file-circle-exclamation text-warning fa-4x fa-4x"></i>
                                             </div>
                                             <div class="col-9">
                                                 <h2 class="card-title">{{ $statistics['contingencia'] }}

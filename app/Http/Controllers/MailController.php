@@ -14,20 +14,20 @@ class MailController extends Controller
 {
     public function mandar_correo(Request $request)
     {
-        try{
+        try {
             $request->validate([
-                'codGeneracion' => 'required|string',
+                'cod_generacion' => 'required|string',
                 'correo' => 'required|email',
             ]);
 
             $insorpaApi = new InsorpaApiService();
-    
-            $codGeneracion = $request->input('codGeneracion');
+
+            $codGeneracion = $request->input('cod_generacion');
             $correo = $request->input('correo');
-    
+
             $dte = $insorpaApi->get("/dtes/{$codGeneracion}");
             $documento = json_decode($dte['documento'], true);
-    
+
             Mail::to($correo)->send(new DteMail(
                 $codGeneracion,
                 $dte["tipo_dte"] == "14" ? $documento["sujetoExcluido"]["nombre"] : $documento["receptor"]["nombre"],
@@ -38,7 +38,7 @@ class MailController extends Controller
                 $dte["enlace_pdf"],
                 $dte["enlace_json"],
             ));
-    
+
             return redirect()->route('invoices.index')->with('success', 'Correo enviado');
         } catch (\Exception $e) {
             Log::error($e->getMessage());

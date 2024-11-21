@@ -1,11 +1,6 @@
 import 'bootstrap';
-import jQuery from "jquery";
-import jszip from 'jszip';
-import pdfmake from 'pdfmake';
-import DataTable from 'datatables.net-bs5';
-import 'datatables.net-buttons-bs5';
-import 'datatables.net-buttons/js/buttons.html5.mjs';
-import 'datatables.net-buttons/js/buttons.print.mjs';
+import jQuery from 'jquery';
+
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
@@ -16,6 +11,8 @@ import axios from 'axios';
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+window.$ = window.jQuery = jQuery;
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -38,4 +35,33 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
 //     enabledTransports: ['ws', 'wss'],
 // });
-window.$ = jQuery
+import $ from 'jquery';
+import DataTable from 'datatables.net-bs5';
+import jszip from 'jszip';
+import pdfmake from 'pdfmake/build/pdfmake';
+
+
+pdfmake.fonts = {
+    Roboto: {
+        normal:
+            "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf",
+        bold: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf",
+        italics:
+            "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf",
+        bolditalics:
+            "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf",
+    },
+};
+
+window.pdfMake = pdfmake;
+
+// Importa y configura los otros módulos de DataTables
+import 'datatables.net-buttons-bs5';
+import 'datatables.net-buttons/js/buttons.html5.mjs';
+import 'datatables.net-buttons/js/buttons.print.mjs';
+
+// Asigna jszip a window para que DataTables lo reconozca
+window.JSZip = jszip;
+
+// Inicializa DataTables en el ámbito de jQuery
+window.$ = window.jQuery = $;

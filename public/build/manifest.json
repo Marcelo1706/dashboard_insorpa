@@ -24,7 +24,7 @@
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
   },
   "resources/js/app.js": {
-    "file": "assets/app-DdV7RUKR.js",
+    "file": "assets/app-l0dw8_Fg.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
@@ -36,7 +36,7 @@
     "isEntry": true
   },
   "resources/js/invoices.js": {
-    "file": "assets/invoices-Dd8YzfbM.js",
+    "file": "assets/invoices-C3C44ql-.js",
     "name": "invoices",
     "src": "resources/js/invoices.js",
     "isEntry": true

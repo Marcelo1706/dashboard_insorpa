@@ -47,9 +47,35 @@ $(function(){
         buttons: [
             {
                 extend: 'print',
-                text: 'Imprimir esta tabla',
-                title: 'Reporte de Documentos Emitidos',
+                text: '<i class="fas fa-print"></i> Imprimir',
+                title: 'Reporte de DTEs',
+                className: 'btn btn-primary',
+                orientation: 'landscape',
+                exportOptions: {
+                    columns: [0,1,2,3,4,5,6,7],
+                    
+                }
             },
+            {
+                extend: 'excel',
+                text: '<i class="fas fa-file-excel"></i> Excel',
+                title: 'Reporte de DTEs',
+                className: 'btn btn-success',
+                exportOptions: {
+                    columns: [0,1,2,3,4,5,6,7],
+                }
+            },
+            {
+                extend: 'pdf',
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                text: '<i class="fas fa-file-pdf"></i> PDF',
+                title: 'Reporte de DTEs',
+                className: 'btn btn-danger',
+                exportOptions: {
+                    columns: [0,1,2,3,4,5,6,7]
+                }
+            }
         ],
         "order": [[ 0, "desc" ]],
     });
