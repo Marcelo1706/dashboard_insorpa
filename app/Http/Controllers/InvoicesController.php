@@ -16,7 +16,7 @@ class InvoicesController extends Controller
             $statistics = $insorpaApi->get('/dtes_statistics?start_date=' . request('fecha'). ' 00:00:00&end_date=' . request('hasta'). ' 23:59:59');
         }elseif(request()->has('fecha')){
             $response = $insorpaApi->get('/dtes?start_date=' . request('fecha') . ' 00:00:00&end_date=' . request('fecha'). ' 23:59:59&items_per_page=10000');
-            $statistics = $insorpaApi->get('/dtes_statistics?fecha=' . request('fecha') . ' 00:00:00&end_date=' . request('fecha'). ' 23:59:59');
+            $statistics = $insorpaApi->get('/dtes_statistics?start_date=' . request('fecha') . ' 00:00:00&end_date=' . request('fecha'). ' 23:59:59');
         } else {
             $response = $insorpaApi->get('/dtes?items_per_page=10000');
             $statistics = $insorpaApi->get('/dtes_statistics');

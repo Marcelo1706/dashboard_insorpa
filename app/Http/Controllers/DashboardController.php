@@ -29,7 +29,7 @@ class DashboardController extends Controller
         $insorpaApi = new InsorpaApiService();
         $today = date('Y-m-d');
         $statistics = $insorpaApi->get('/dtes_statistics');
-        $statistics_today = $insorpaApi->get('/dtes_statistics?fecha=' . $today);
+        $statistics_today = $insorpaApi->get('/dtes_statistics?start_date=' . $today);
         $datos_empresa = $insorpaApi->get('/datos_empresa/1');
 
         return view('home', compact('statistics', 'datos_empresa', 'statistics_today'));
