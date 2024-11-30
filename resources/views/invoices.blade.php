@@ -72,7 +72,7 @@
                     <table class="table table-bordered table-hover table-striped w-100 align-middle" id="invoicesTable">
                         <thead>
                             <tr class="align-middle text-center">
-                                <th style="width: 5%;">Transacción</th>
+                                <th style="width: 5%;"></th>
                                 <th style="width: 10%;">Tipo de Documento</th>
                                 <th style="width: 15%;">Información Hacienda</th>
                                 <th style="width: 15%;">Receptor</th>
@@ -97,7 +97,13 @@
                                         @if ($invoice['documento']->apendice)
                                             @foreach ($invoice['documento']->apendice as $apendice)
                                                 @if ($apendice->etiqueta == 'Transaccion')
-                                                    {{ $apendice->valor }}
+                                                    <strong>Transacción: </strong>{{ $apendice->valor }}
+                                                @endif
+                                                @if ($apendice->etiqueta == 'Tienda')
+                                                    <strong>Tienda: </strong>{{ $apendice->valor }}
+                                                @endif
+                                                @if ($apendice->etiqueta == 'Terminal')
+                                                    <strong>Terminal: </strong>{{ $apendice->valor }}
                                                 @endif
                                             @endforeach
                                         @endif
