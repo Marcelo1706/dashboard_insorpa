@@ -207,36 +207,7 @@
                                 </td>
                                 <td>{{ $invoice['estado'] }}</td>
                                 <td class="small">
-                                    {{-- {{ $invoice['observaciones'] }} --}}
-                                    @php
-                                        $decoded = json_decode($invoice['observaciones'], true);
-                                    @endphp
-                                    @if (is_array($decoded))
-                                        @if (!empty($decoded))
-                                            @if (array_key_exists('descripcionMsg', $decoded))
-                                                <p>{{ $decoded['descripcionMsg'] }}</p>
-                                            @else
-                                                @foreach ($decoded as $observacion)
-                                                    <p>{{ trim($observacion, '[]') }}</p>
-                                                @endforeach
-                                            @endif
-                                        @endif
-                                    @else
-                                        @if (str_starts_with($invoice['observaciones'], '[') && str_ends_with($invoice['observaciones'], ']'))
-                                            @php
-                                                $json_string = str_replace("'", "\"", $invoice['observaciones']);
-                                                // Decode the JSON string to a PHP array
-                                                $array = json_decode($json_string, true);
-                                            @endphp
-                                            @if (is_array($array))
-                                                @foreach ($array as $observacion)
-                                                    <p>{{ $observacion }}</p>
-                                                @endforeach
-                                            @endif
-                                        @else
-                                            <p>{{ $invoice['observaciones'] }}</p>
-                                        @endif
-                                    @endif
+                                    {{ $invoice['observaciones'] }}
                                 </td>
                                 <td>
                                     @if ($invoice['estado'] === 'CONTINGENCIA' || $invoice['estado'] === 'RECHAZADO')
