@@ -207,7 +207,9 @@
                                 </td>
                                 <td>{{ $invoice['estado'] }}</td>
                                 <td class="small">
-                                    {{ $invoice['observaciones'] }}
+                                    @if($invoice['observaciones'] != '[]')
+                                        {{ $invoice['observaciones'] }}
+                                    @endif
                                 </td>
                                 <td>
                                     @if ($invoice['estado'] === 'CONTINGENCIA' || $invoice['estado'] === 'RECHAZADO')
