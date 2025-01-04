@@ -27,27 +27,44 @@
         @endif
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <div class="row justify-content-center">
-                    <div class="col-lg-5">
-                        <form action="" id="formConsulta">
-                            <div class="form-group row mb-3">
-                                <label class="col-sm-1 col-form-label" for="fecha">Desde:</label>
-                                <div class="col-sm-4">
-                                    <input type="date" class="form-control" id="fecha" name="fecha"
-                                        value="{{ $fecha }}" required>
-                                </div>
-                                <label class="col-sm-1 col-form-label" for="fecha">Hasta:</label>
-                                <div class="col-sm-4">
-                                    <input type="date" class="form-control" id="hasta" name="hasta"
-                                        value="{{ $hasta }}" required>
-                                </div>
-                                <div class="col-sm-2">
-                                    <input type="submit" value="Consultar DTEs" class="btn btn-primary">
-                                </div>
-                            </div>
-                        </form>
+                <form action="" id="formConsulta">
+                    <div class="row justify-content-center">
+                        <div class="form-group col-sm-3 mb-3">
+                            <label class="form-label" for="fecha">Desde:</label>
+                            <input type="date" class="form-control" id="fecha" name="fecha"
+                                    value="{{ $fecha }}" required>
+                        </div>
+                        <div class="form-group col-sm-3 mb-3">
+                            <label class="form-label" for="fecha">Hasta:</label>
+                            <input type="date" class="form-control" id="hasta" name="hasta"
+                                    value="{{ $hasta }}" required>
+                        </div>
+                        <div class="form-group col-sm-3 mb-3">
+                            <label class="form-label" for="estado">Estado:</label>
+                            <select name="type" id="estado" class="form-select">
+                                <option value="ALL">Todos</option>
+                                <option value="PROCESADO" @if ($estado == 'PROCESADO') selected @endif>Procesado
+                                </option>
+                                <option value="RECHAZADO" @if ($estado == 'RECHAZADO') selected @endif>Rechazado
+                                </option>
+                                <option value="CONTINGENCIA" @if ($estado == 'CONTINGENCIA') selected @endif>
+                                    Contingencia</option>
+                                <option value="ANULADO" @if ($estado == 'ANULADO') selected @endif>Anulado</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-3 mb-3">
+                            <label class="form-label" for="tienda">Tienda:</label>
+                            <select name="tienda" id="tienda" class="form-select">
+                                <option value="ALL">Todas</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
+                    <div class="row justify-content-center">
+                        <div class="form-group col-sm-3 text-center">
+                            <button type="submit" class="btn btn-primary">Consultar DTEs</button>
+                        </div>
+                    </div>
+                </form>
                 <div class="row mt-5 mb-2">
                     <div class="col-md-12">
                         <div class="header-content">
@@ -69,7 +86,45 @@
                     </div>
                 </div>
                 <div class="row my-4">
-                    <table class="table table-bordered table-hover table-striped w-100 align-middle" id="invoicesTable">
+                    <table class="small table table-bordered table-hover table-striped w-100 align-middle" id="invoicesTable">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Tienda</th>
+                                <th>Transacción</th>
+                                <th>Receptor</th>
+                                <th>Importe</th>
+                                <th>IVA</th>
+                                <th>Total</th>
+                                <th>Tipo DTE</th>
+                                <th>Estado</th>
+                                <th>Observación</th>
+                                <th>Cod. Generación.</th>
+                                <th>Número de Control</th>
+                                <th>Sello de Recepción</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Tienda</th>
+                                <th>Transacción</th>
+                                <th>Receptor</th>
+                                <th>Importe</th>
+                                <th>IVA</th>
+                                <th>Total</th>
+                                <th>Tipo DTE</th>
+                                <th>Estado</th>
+                                <th>Observación</th>
+                                <th>Cod. Generación.</th>
+                                <th>Número de Control</th>
+                                <th>Sello de Recepción</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    {{-- <table class="table table-bordered table-hover table-striped w-100 align-middle" id="invoicesTable">
                         <thead>
                             <tr class="align-middle text-center">
                                 <th style="width: 5%;"></th>
@@ -207,7 +262,7 @@
                                 </td>
                                 <td>{{ $invoice['estado'] }}</td>
                                 <td class="small">
-                                    @if($invoice['observaciones'] != '[]')
+                                    @if ($invoice['observaciones'] != '[]')
                                         {{ $invoice['observaciones'] }}
                                     @endif
                                 </td>
@@ -249,7 +304,7 @@
                                 <th style="width: 15%;">Acciones</th>
                             </tr>
                         </tfoot>
-                    </table>
+                    </table> --}}
                 </div>
                 <div class="row my-4">
                     <div class="col-lg-12 mb-5">
@@ -258,7 +313,7 @@
                                 <h2>Estadísticas</h2>
                             </div>
                             <div class="col-md-2 text-center">
-                                <a href="/invoices?fecha={{ date('Y-m-d') }}" class="card mb-2 text-decoration-none">
+                                <div class="card mb-2">
                                     <div class="card-body bg-light btn shadow">
                                         <div class="row py-2 justify-content-center">
                                             <div class="col-3">
@@ -266,16 +321,15 @@
                                                 <i class="fas fa-file text-info fa-4x fa-4x"></i>
                                             </div>
                                             <div class="col-9">
-                                                <h2 class="card-title">{{ $statistics['total'] }}</h2>
+                                                <h2 class="card-title" id="statisticsTotal">{{ $statistics['total'] }}</h2>
                                                 <p class="card-text h6">Documentos<br>Generados</p>
                                             </div>
                                         </div>
                                     </div>
-                                </a>
+                                </div>
                             </div>
                             <div class="col-md-2 text-center">
-                                <a href="/invoices?type=ANULADO&fecha={{ date('Y-m-d') }}"
-                                    class="card mb-2 text-decoration-none">
+                                <div class="card mb-2">
                                     <div class="card-body bg-light btn shadow">
                                         <div class="row py-2 justify-content-center">
                                             <div class="col-3">
@@ -283,16 +337,15 @@
                                                 <i class="fas fa-file-circle-minus text-secondary fa-4x fa-4x"></i>
                                             </div>
                                             <div class="col-9">
-                                                <h2 class="card-title">{{ $statistics['anulado'] }}</h2>
+                                                <h2 class="card-title" id="statisticsAnulado">{{ $statistics['anulado'] }}</h2>
                                                 <p class="card-text h6">Documentos<br>Anulados</p>
                                             </div>
                                         </div>
                                     </div>
-                                </a>
+                                </div>
                             </div>
                             <div class="col-md-2 text-center">
-                                <a href="/invoices?type=PROCESADO&fecha={{ date('Y-m-d') }}"
-                                    class="card mb-2 text-decoration-none">
+                                <div class="card mb-2">
                                     <div class="card-body bg-light btn shadow">
                                         <div class="row py-2 justify-content-center">
                                             <div class="col-3">
@@ -300,16 +353,15 @@
                                                 <i class="fas fa-file-circle-check text-success fa-4x fa-4x"></i>
                                             </div>
                                             <div class="col-9">
-                                                <h2 class="card-title">{{ $statistics['approved'] }}</h2>
+                                                <h2 class="card-title" id="statisticsApproved">{{ $statistics['approved'] }}</h2>
                                                 <p class="card-text h6">Documentos<br>Enviados</p>
                                             </div>
                                         </div>
                                     </div>
-                                </a>
+                                </div>
                             </div>
                             <div class="col-md-2 text-center">
-                                <a href="/invoices?type=RECHAZADO&fecha={{ date('Y-m-d') }}"
-                                    class="card mb-2 text-decoration-none">
+                                <div class="card mb-2">
                                     <div class="card-body bg-light btn shadow">
                                         <div class="row py-2 justify-content-center">
                                             <div class="col-3">
@@ -317,16 +369,15 @@
                                                 <i class="fas fa-file-circle-xmark text-danger fa-4x fa-4x"></i>
                                             </div>
                                             <div class="col-9">
-                                                <h2 class="card-title">{{ $statistics['rejected'] }}</h2>
+                                                <h2 class="card-title" id="statisticsRejected">{{ $statistics['rejected'] }}</h2>
                                                 <p class="card-text h6">Documentos<br>Rechazados</p>
                                             </div>
                                         </div>
                                     </div>
-                                </a>
+                                </div>
                             </div>
                             <div class="col-md-2 text-center">
-                                <a href="/invoices?type=CONTINGENCIA&fecha={{ date('Y-m-d') }}"
-                                    class="card mb-2 text-decoration-none">
+                                <div class="card mb-2">
                                     <div class="card-body bg-light btn shadow">
                                         <div class="row py-2 justify-content-center">
                                             <div class="col-3">
@@ -334,13 +385,13 @@
                                                 <i class="fas fa-file-circle-exclamation text-warning fa-4x fa-4x"></i>
                                             </div>
                                             <div class="col-9">
-                                                <h2 class="card-title">{{ $statistics['contingencia'] }}
+                                                <h2 class="card-title" id="statisticsContingencia">{{ $statistics['contingencia'] }}
                                                 </h2>
                                                 <p class="card-text h6">Documentos<br>en Contingencia</p>
                                             </div>
                                         </div>
                                     </div>
-                                </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -379,5 +430,12 @@
             </div>
         </div>
     </div>
+    <script>
+        window.dtes = {{ Js::from($invoices) }};
+        window.tiposDte = {{ Js::from($tiposDte) }};
+        window.receptores_nit = {{ Js::from($receptores_nit) }};
+        window.receptores_num = {{ Js::from($receptores_num) }};
+        window.tienda = "{{ $tienda }}";
+    </script>
     @vite('resources/js/invoices.js')
 @endsection

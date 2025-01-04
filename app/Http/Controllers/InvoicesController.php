@@ -10,6 +10,8 @@ class InvoicesController extends Controller
 {
     public function index()
     {
+        $estado = request('type');
+        $tienda = request('tienda');
         $insorpaApi = new InsorpaApiService();
         if(request()->has('fecha') && request()->has('hasta')){
             $response = $insorpaApi->get('/dtes?start_date=' . request('fecha') . ' 00:00:00&end_date=' . request('hasta'). ' 23:59:59&items_per_page=10000');
@@ -24,10 +26,10 @@ class InvoicesController extends Controller
         $dtes = $response['data'];
 
         // Check query params to filter invoices
-        if (request()->has('type')) {
-            $dtes = array_filter($dtes, function ($dte) {
+        if (request()->has('type') && request('type') != 'ALL' && request('type') != '') {
+            $dtes = array_values(array_filter($dtes, function ($dte) {
                 return $dte['estado'] == request('type');
-            });
+            }));
         }
 
         $dtes = array_map(function ($dte) {
@@ -35,7 +37,14 @@ class InvoicesController extends Controller
             return $dte;
         }, $dtes);
 
-        return view('invoices', ['invoices' => $dtes, 'fecha' => request('fecha'), 'hasta' => request('hasta'), 'statistics' => $statistics]);
+        return view('invoices', [
+            'invoices' => $dtes,
+            'fecha' => request('fecha'),
+            'hasta' => request('hasta'),
+            'statistics' => $statistics,
+            'estado' => $estado,
+            'tienda' => $tienda
+        ]);
     }
 
     public function download_dtes()
