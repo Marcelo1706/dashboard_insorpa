@@ -223,7 +223,7 @@ $(function(){
                 className: 'btn btn-primary',
                 orientation: 'landscape',
                 exportOptions: {
-                    columns: [0,1,2,3,4,5,6,7,9,10,11],
+                    columns: [0,1,2,3,4,5,6,7,9,10,11,12],
                     
                 }
             },
@@ -233,7 +233,7 @@ $(function(){
                 title: 'Reporte de DTEs',
                 className: 'btn btn-success',
                 exportOptions: {
-                    columns: [0,1,2,3,4,5,6,7,9,10,11],
+                    columns: [0,1,2,3,4,5,6,7,9,10,11,12],
                 }
             },
             {
@@ -244,7 +244,7 @@ $(function(){
                 title: 'Reporte de DTEs',
                 className: 'btn btn-danger',
                 exportOptions: {
-                    columns: [0,1,2,3,4,5,6,7,9,10,11],
+                    columns: [0,1,2,3,4,5,6,7,9,10,11,12],
                 }
             }
         ],
