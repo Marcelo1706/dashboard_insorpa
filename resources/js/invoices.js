@@ -65,18 +65,18 @@ $(function(){
 
             switch(element.tipo_dte){
                 case "01":
-                    prepared_element.neto = "$"+(element.documento.resumen.totalPagar).toFixed(2);
-                    prepared_element.iva = "$"+(element.documento.resumen.totalIva).toFixed(2);
+                    prepared_element.neto = "$"+(element.documento.resumen.totalPagar - (element.documento.resumen.totalPagar * 0.13)).toFixed(2);
+                    prepared_element.iva = "$"+(element.documento.resumen.totalPagar * 0.13).toFixed(2);
                     prepared_element.total = "$"+(element.documento.resumen.totalPagar).toFixed(2);
                     break;
                 case "03":
                     prepared_element.neto = "$"+(element.documento.resumen.subTotalVentas).toFixed(2);
-                    prepared_element.iva = "$"+(element.documento.resumen.totalPagar - element.documento.resumen.subTotalVentas).toFixed(2);
+                    prepared_element.iva = "$"+(element.documento.resumen.subTotalVentas * 0.13).toFixed(2);
                     prepared_element.total = "$"+(element.documento.resumen.totalPagar).toFixed(2);
                     break;
                 case "05":
                     prepared_element.neto = "$"+(element.documento.resumen.subTotalVentas).toFixed(2);
-                    prepared_element.iva = "$"+(element.documento.resumen.montoTotalOperacion - element.documento.resumen.subTotalVentas).toFixed(2);
+                    prepared_element.iva = "$"+(element.documento.resumen.subTotalVentas * 0.13).toFixed(2);
                     prepared_element.total = "$"+(element.documento.resumen.montoTotalOperacion).toFixed(2);
                     break;
                 case "07":
