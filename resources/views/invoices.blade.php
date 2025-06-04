@@ -3,6 +3,7 @@
     $tiposDte = [
         '01' => 'Factura Electrónica',
         '03' => 'Crédito Fiscal',
+        '04' => 'Nota de Remisión',
         '05' => 'Nota de Crédito',
         '07' => 'Comprobante de Retención',
         '11' => 'Factura de Exportación',
