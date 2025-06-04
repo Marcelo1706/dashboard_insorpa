@@ -2,6 +2,7 @@
 /node_modules
 /public/hot
 !/public/storage/img/logo.jpg
+!/public/storage/img/logo.png
 /storage/*.key
 /vendor
 .env

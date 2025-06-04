@@ -6,7 +6,7 @@
             <div class="col-md-8 mx-auto">
                 <div class="card">
                     <div class="card-header text-center">
-                        <img src="storage/img/logo.jpg" alt="Logo Dashboard" class="img-thumbnail mx-auto d-block mb-3">
+                        <img src="storage/img/logo.png" alt="Logo Dashboard" class="img-thumbnail mx-auto d-block mb-3">
                         <h2>Facturación Electrónica</h2>
                     </div>
                     <div class="card-body">
