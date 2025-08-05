@@ -20,7 +20,7 @@ class InvoicesController extends Controller
             $response = $insorpaApi->get('/dtes?start_date=' . request('fecha') . ' 00:00:00&end_date=' . request('fecha'). ' 23:59:59&items_per_page=10000');
             $statistics = $insorpaApi->get('/dtes_statistics?start_date=' . request('fecha') . ' 00:00:00&end_date=' . request('fecha'). ' 23:59:59');
         } else {
-            $response = $insorpaApi->get('/dtes?items_per_page=10000');
+            $response = $insorpaApi->get('/dtes');
             $statistics = $insorpaApi->get('/dtes_statistics');
         }
         $dtes = $response['data'];
