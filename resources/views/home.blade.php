@@ -17,7 +17,7 @@
                                 <h2>Estadísticas del día {{ \Carbon\Carbon::parse(now())->format('d/m/Y') }}</h2>
                             </div>
                             <div class="col-lg col-md-6 text-center">
-                                <a href="/invoices?fecha={{ date('Y-m-d') }}"
+                                <a href="/invoices?fecha_inicio={{ date('Y-m-d') }} 00:00:00"
                                     class="card mb-2 text-decoration-none">
                                     <div class="card-body bg-light btn shadow">
                                         <div class="row py-2 justify-content-center">
@@ -34,7 +34,7 @@
                                 </a>
                             </div>
                             <div class="col-lg col-md-6 text-center">
-                                <a href="/invoices?type=ANULADO&fecha={{ date('Y-m-d') }}"
+                                <a href="/invoices?estado=ANULADO&fecha_inicio={{ date('Y-m-d') }} 00:00:00"
                                     class="card mb-2 text-decoration-none">
                                     <div class="card-body bg-light btn shadow">
                                         <div class="row py-2 justify-content-center">
@@ -51,7 +51,7 @@
                                 </a>
                             </div>
                             <div class="col-lg col-md-6 text-center">
-                                <a href="/invoices?type=PROCESADO&fecha={{ date('Y-m-d') }}"
+                                <a href="/invoices?estado=PROCESADO&fecha_inicio={{ date('Y-m-d') }} 00:00:00"
                                     class="card mb-2 text-decoration-none">
                                     <div class="card-body bg-light btn shadow">
                                         <div class="row py-2 justify-content-center">
@@ -68,7 +68,7 @@
                                 </a>
                             </div>
                             <div class="col-lg col-md-6 text-center">
-                                <a href="/invoices?type=RECHAZADO&fecha={{ date('Y-m-d') }}"
+                                <a href="/invoices?estado=RECHAZADO&fecha_inicio={{ date('Y-m-d') }} 00:00:00"
                                     class="card mb-2 text-decoration-none">
                                     <div class="card-body bg-light btn shadow">
                                         <div class="row py-2 justify-content-center">
@@ -85,7 +85,7 @@
                                 </a>
                             </div>
                             <div class="col-lg col-md-6 text-center">
-                                <a href="/invoices?type=CONTINGENCIA&fecha={{ date('Y-m-d') }}"
+                                <a href="/invoices?estado=CONTINGENCIA&fecha_inicio={{ date('Y-m-d') }} 00:00:00"
                                     class="card mb-2 text-decoration-none">
                                     <div class="card-body bg-light btn shadow">
                                         <div class="row py-2 justify-content-center">
@@ -120,7 +120,7 @@
                                             </td>
                                             <td>{{ $statistics['total'] }}</td>
                                         </tr>
-                                        <tr onclick="window.location='/invoices?type=ANULADO'">
+                                        <tr onclick="window.location='/invoices?estado=ANULADO'">
                                             <td>
                                                 <a class="text-black text-decoration-none mb-2">
                                                     <i class="me-3 fa fa-file text-secondary"></i> Documentos Anulados:
@@ -128,7 +128,7 @@
                                             </td>
                                             <td>{{ $statistics['anulado'] }}</td>
                                         </tr>
-                                        <tr onclick="window.location='/invoices?type=PROCESADO'">
+                                        <tr onclick="window.location='/invoices?estado=PROCESADO'">
                                             <td>
                                                 <a class="text-black text-decoration-none mb-2">
                                                     <i class="me-3 fa fa-file text-success"></i> Documentos Enviados:
@@ -136,7 +136,7 @@
                                             </td>
                                             <td>{{ $statistics['approved'] }}</td>
                                         </tr>
-                                        <tr onclick="window.location='/invoices?type=RECHAZADO'">
+                                        <tr onclick="window.location='/invoices?estado=RECHAZADO'">
                                             <td>
                                                 <a class="text-black text-decoration-none mb-2">
                                                     <i class="me-3 fa fa-file text-danger"></i> Documentos Rechazados:
@@ -144,7 +144,7 @@
                                             </td>
                                             <td>{{ $statistics['rejected'] }}</td>
                                         </tr>
-                                        <tr onclick="window.location='/invoices?type=CONTINGENCIA'">
+                                        <tr onclick="window.location='/invoices?estado=CONTINGENCIA'">
                                             <td>
                                                 <a class="text-black text-decoration-none mb-2">
                                                     <i class="me-3 fa fa-file text-warning"></i> Documentos en Contingencia:

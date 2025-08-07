@@ -39,10 +39,10 @@ class MailController extends Controller
                 $dte["enlace_json"],
             ));
 
-            return redirect()->route('invoices.index')->with('success', 'Correo enviado');
+            return redirect()->back()->with('success', 'Correo enviado');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route('invoices.index')->with('error', 'Error al enviar correo');
+            return redirect()->back()->with('error', 'Error al enviar correo');
         }
     }
 }
