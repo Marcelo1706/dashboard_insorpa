@@ -41,8 +41,19 @@ class DtesFiltradosTable extends Component
     ];
 
     protected $queryString = [
-        'fecha_inicio', 'fecha_fin', 'estado', 'tienda', 'documento_receptor', 'nombre_receptor',
-        'cod_generacion', 'sello_recibido', 'numero_control', 'total_min', 'total_max', 'perPage', 'page'
+        'fecha_inicio',
+        'fecha_fin',
+        'estado',
+        'tienda',
+        'documento_receptor',
+        'nombre_receptor',
+        'cod_generacion',
+        'sello_recibido',
+        'numero_control',
+        'total_min',
+        'total_max',
+        'perPage',
+        'page'
     ];
 
     public function updating($name)
@@ -110,9 +121,16 @@ class DtesFiltradosTable extends Component
 
         $tiendas = DB::connection('pgsql')->select("SELECT DISTINCT apendice_item->>'valor' AS tienda
             FROM dte_generados dg,
-                jsonb_array_elements(dg.documento::jsonb->'apendice') AS apendice_item
+                jsonb_array_elements(
+                    CASE 
+                        WHEN jsonb_typeof(dg.documento::jsonb->'apendice') = 'array' 
+                        THEN dg.documento::jsonb->'apendice' 
+                        ELSE '[]'::jsonb 
+                    END
+                ) AS apendice_item
             WHERE apendice_item->>'campo' = 'Tienda'
-            ORDER BY tienda;");
+            ORDER BY tienda;
+        ");
 
         // Total manual (para paginación)
         $total = DB::connection('pgsql')->selectOne("
@@ -151,7 +169,7 @@ class DtesFiltradosTable extends Component
         $this->numero_control = '';
         $this->total_min = '';
         $this->total_max = '';
-        
+
         $this->page = 1;
         $this->resetPage();
     }
@@ -173,7 +191,7 @@ class DtesFiltradosTable extends Component
         ];
 
         $fileName = 'Reporte de DTEs - ' . date('Y-m-d_H-i-s') . '.xlsx';
-        
+
         return Excel::download(new DtesFiltradosExport($params), $fileName);
     }
 }
